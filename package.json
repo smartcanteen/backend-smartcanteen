@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate",
+  "name": "backend-smartcanteen",
   "version": "1.0.0",
-  "description": "boilerplate-backend",
+  "description": "backend-smartcanteen",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

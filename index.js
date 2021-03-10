@@ -10,7 +10,7 @@ const flamelinkApp = require('./config/flamelinkSDK')
 
 // cors
 var allowedOrigins = [
-  "http://localhost:3000",
+  "http://localhost:5000",
   "http://localhost"
 ]
 
@@ -59,7 +59,7 @@ app.use(async (err,req,res,next) => {
 })
 
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 
 app.listen(port , () => {
   // db.sync({})
