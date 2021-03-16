@@ -6,7 +6,9 @@ const cors = require('cors')
 require('./middleware/auth')
 
 const response = require('./middleware/response')
-const flamelinkApp = require('./config/flamelinkSDK')
+const db = require("./config/database")
+require("./config/relation")
+// const flamelinkApp = require('./config/flamelinkSDK')
 
 // cors
 var allowedOrigins = [
@@ -62,8 +64,8 @@ app.use(async (err,req,res,next) => {
 const port = process.env.PORT || 5000
 
 app.listen(port , () => {
-  // db.sync({})
-  // .then(() => console.log(`app is running on port ${port}`))
-  // .catch(err => console.log(err.message))
+  db.sync({ force:true })
+  .then(() => console.log(`app is running on port ${port}`))
+  .catch(err => console.log(err.message))
   console.log(`app is running on port ${port}`)
 }) 
