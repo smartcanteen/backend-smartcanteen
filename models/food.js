@@ -5,10 +5,10 @@ const Food = db.define(
     'food',
     {
       id_makanan: {
-        allowNull: false, 
-        autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       nama : {
         type : Sequelize.STRING,
@@ -23,7 +23,7 @@ const Food = db.define(
         allowNull: false
       },
       id_penjual : {
-        type : Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull : true
       },
   }

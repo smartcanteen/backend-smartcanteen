@@ -5,10 +5,10 @@ const Table = db.define(
     'table',
     {
       id_meja: {
-        allowNull: false, 
-        autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       no_meja : {
         type : Sequelize.STRING,

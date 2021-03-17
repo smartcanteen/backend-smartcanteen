@@ -5,13 +5,13 @@ const Order = db.define(
     'order',
     {
       id_order: {
-        allowNull: false, 
-        autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       id_pembeli : {
-        type : Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull : true
       }
   }

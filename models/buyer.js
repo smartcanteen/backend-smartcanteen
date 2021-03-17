@@ -6,9 +6,9 @@ const Buyer = db.define(
     {
       id_pembeli: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       first_name : {
         type : Sequelize.STRING,
@@ -27,7 +27,7 @@ const Buyer = db.define(
         allowNull : false
       },
       id_meja: {
-        type : Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull : true
       }
   }

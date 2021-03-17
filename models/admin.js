@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize')
 const db = require('../config/database')
 
-const Seller = db.define(
-    'seller',
+const Admin = db.define(
+    'admin',
     {
-      id_penjual: {
+      id_admin: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
@@ -18,11 +18,11 @@ const Seller = db.define(
         type : Sequelize.STRING,
         allowNull : false
       },
-      email : {
+      no_telp : {
         type : Sequelize.STRING,
         allowNull : false
       },
-      no_telp : {
+      email : {
         type : Sequelize.STRING,
         allowNull : false
       },
@@ -33,4 +33,4 @@ const Seller = db.define(
   }
 )
 
-module.exports = Seller
+module.exports = Admin

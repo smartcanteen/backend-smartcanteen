@@ -1,3 +1,5 @@
+const Joi = require("joi")
+
 const validateBody = schema => {
   return async (req,res,next) => {
       const result = Joi.validate(req.body,schema,{abortEarly : false})
@@ -10,7 +12,6 @@ const validateBody = schema => {
               }
               errorData.push(error)
           })
-          await deleteFoto(req)
           // return response(res,false,errorData,,422)
           res.sendError(errorData,'Validasi gagal',422)
       }

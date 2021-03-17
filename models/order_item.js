@@ -5,17 +5,17 @@ const Order_Item = db.define(
     'order_item',
     {
       id_order_item: {
-        allowNull: false, 
-        autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       id_order : {
-        type : Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull : true
       },
       id_makanan : {
-        type : Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull : true
       },
       quantity:{
