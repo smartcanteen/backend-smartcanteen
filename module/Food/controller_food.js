@@ -10,25 +10,20 @@ async function tambahMakanan(req,res) {
   if (!req.user.isSeller) return res.sendError({},'Anda bukan penjual, silahkan kontak admin untuk lebih lanjut',401)
   food = new Food(payload)
   await food.save()
-  res.sendResponse(food,'Registrasi telah berhasil',201)
+  res.sendResponse(food,'Makanan berhasil ditambahkan',201)
 }
 
 async function detailMakanan(req,res) {
-  const id = req.user.id_penjual
-  const seller = await Seller.findByPk(id)
-  if (!seller) return res.sendError({},'Akun tidak ditemukan!',401)
+  const id = req.params.id
+  const food = await Food.findByPk(id)
+  if (!food) return res.sendError({},'Makanan tidak ditemukan!',401)
   else {
-    let data = {}
-    data.id_penjual = seller.id_penjual
-    data.first_name = seller.first_name
-    data.last_name = seller.last_name
-    data.email = seller.email
+    let data = 
     res.sendResponse(data,'Sukses Login',200)
   }
 }
 
 module.exports = {
-  loginSeller,
-  regisSeller,
-  detailSeller
+  tambahMakanan,
+  detailMakanan
 }
