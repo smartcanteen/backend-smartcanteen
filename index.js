@@ -13,6 +13,7 @@ require("./config/relation")
 // cors
 var allowedOrigins = [
   "http://localhost:5000",
+  "http://localhost:3000",
   "http://localhost"
 ]
 
@@ -31,7 +32,7 @@ app.use(
   })
 )
 
-app.use(cors())
+// app.use(cors())
 
 // middleware
 app.use(express.urlencoded({extended : true}))
