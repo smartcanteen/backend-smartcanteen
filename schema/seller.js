@@ -1,11 +1,11 @@
 const Joi = require('joi')
 
-const loginSeller = Joi.object().keys({
+const loginSeller = Joi.object({
     email : Joi.string().email().required(),
     password : Joi.string().required().min(6),
 })
 
-const registerSeller = Joi.object().keys({
+const registerSeller = Joi.object({
     first_name : Joi.string().min(3).required(),
     last_name : Joi.string().min(3).required(),
     email : Joi.string().email().required().error((errors) => new Error('email tidak tepat')),

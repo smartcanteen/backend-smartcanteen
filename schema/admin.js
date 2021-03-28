@@ -1,16 +1,16 @@
 const Joi = require('joi')
 
-const loginAdmin = Joi.object().keys({
+const loginAdmin = Joi.object({
     email : Joi.string().email().required(),
     password : Joi.string().required().min(6),
 })
 
-const registerAdmin = Joi.object().keys({
-    first_name : Joi.string().min(3).required(),
-    last_name : Joi.string().min(3).required(),
-    email : Joi.string().email().required().error((errors) => new Error('email tidak tepat')),
-    no_telp : Joi.string().min(9).max(12).required().error((errors) => new Error('silahkan masukkan notelp dengan benar')),
-    password : Joi.string().required().min(6).error((errors) => new Error('Silahkan gunakan kombinasi caps dan angka'))
+const registerAdmin = Joi.object({
+    first_name : Joi.string().min(3).message('masukkan nama minimal 3 huruf').required(),
+    last_name : Joi.string().min(3).message('masukkan nama minimal 3 huruf').required(),
+    email : Joi.string().email().message('masukkan email dengan benar').required(),
+    no_telp : Joi.string().min(9).message('nomor telepon harus lebih dari 9').max(12).message('nomor telepon tidak boleh lebih dari 12').required(),
+    password : Joi.string().min(6).message('Silahkan gunakan kombinasi caps dan angka min 6').required()
 })
 
 module.exports = {

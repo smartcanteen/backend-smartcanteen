@@ -2,9 +2,12 @@ const Joi = require("joi")
 
 const validateBody = schema => {
   return async (req,res,next) => {
-      const result = Joi.validate(req.body,schema,{abortEarly : false})
+      const result = schema.validate(req.body,{abortEarly : false})
+      // console.log("result")
+      // console.log(result.error.details)
       if (result.error) {
           let errorData = []
+          // console.log(result.error, "asd")
           result.error.details.map(item => {
               let error = {
                   path : item.path[0],
@@ -13,9 +16,10 @@ const validateBody = schema => {
               errorData.push(error)
           })
           // return response(res,false,errorData,,422)
-          res.sendError(errorData,'Validasi gagal',422)
+          res.sendError(errorData,'Validasi gagal',400)
+      }else{
+        next()
       }
-      next()
   }
 }
 

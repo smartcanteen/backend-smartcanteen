@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-const tambahMakanan = Joi.object().keys({
+const tambahMakanan = Joi.object({
     first_name : Joi.string().min(3).required(),
     last_name : Joi.string().min(3).required(),
     email : Joi.string().email().required(),

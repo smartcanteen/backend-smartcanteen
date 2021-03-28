@@ -12,6 +12,9 @@ const Food = require("../models/food")
 const Order_Item = require("../models/order_item")
 const Order = require("../models/order")
 const Table = require("../models/table")
+const Invoice = require("../models/invoice")
+const Payment = require("../models/payment")
+const Admin = require("../models/admin")
 
 // Organizations.belongsToMany(Admin, {through: Organizations_Admin})
 // Admin.belongsToMany(Organizations, {through: Organizations_Admin})
@@ -31,17 +34,8 @@ Food.hasMany(Order_Item, { foreignKey: 'id_makanan' })
 Buyer.belongsTo(Table, { foreignKey: 'id_meja' })
 Table.hasMany(Buyer, { foreignKey: 'id_meja' })
 
-// Logs.belongsTo(Item, { foreignKey: 'id_barang' })
-// Item.hasMany(Logs, { foreignKey: 'id_barang' })
+Invoice.belongsTo(Order, { foreignKey: 'id_order' })
+Order.hasMany(Invoice, { foreignKey: 'id_order' })
 
-// Peminjaman.belongsTo(Item, { foreignKey: 'id_barang' })
-// Item.hasMany(Peminjaman, { foreignKey: 'id_barang'})
-
-// Peminjaman.belongsTo(Admin, { foreignKey: 'id_admin' })
-// Admin.hasMany(Peminjaman, { foreignKey: 'id_admin' })
-
-// Peminjaman.belongsTo(User, { foreignKey: 'id_user' })
-// User.hasMany(Peminjaman, { foreignKey: 'id_user' })
-
-// Item.belongsTo(Category, { foreignKey: 'id_kategori' })
-// Category.hasMany(Item, { foreignKey: 'id_kategori' })
+Payment.belongsTo(Invoice, { foreignKey: 'id_invoice' })
+Invoice.hasMany(Payment, { foreignKey: 'id_invoice' })

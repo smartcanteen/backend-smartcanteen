@@ -12,6 +12,12 @@ router.route('/')
     sellerController.detailSeller
   )
 
+router.route('/all')
+  .get(
+    authenticateToken,
+    sellerController.getAllSeller
+  )
+
 router
   .route("/login")
   .post(
