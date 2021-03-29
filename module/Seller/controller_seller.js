@@ -51,9 +51,11 @@ async function detailSeller(req,res) {
 }
 
 async function getAllSeller(req,res) {
+  // console.log("masuk");
   const seller = await Seller.findAll({
-    attributes: { exclude: ['password','deletedAt','updatedAt','createdAt'] }
+    attributes: { exclude: ['password','deletedAt','updatedAt'] }
   })
+  // console.log(seller);
   if (!seller) return res.sendError({},'Akun tidak ditemukan!',401)
   else if (!req.user.isAdmin) return res.sendError({},'Maaf, anda bukan admin',401)
   else {

@@ -11,11 +11,6 @@ router.route('/')
     authenticateToken,
     sellerController.detailSeller
   )
-router.route('/:id')
-  .get(
-    authenticateToken,
-    sellerController.detailSeller
-  )
 
 router.route('/all')
   .get(
@@ -35,6 +30,12 @@ router.route("/register")
     authenticateToken,
     validateBody(sellerSchemas.registerSeller),
     sellerController.regisSeller
+  )
+  
+router.route('/:id')
+  .get(
+    authenticateToken,
+    sellerController.detailSeller
   )
 
 module.exports = router
