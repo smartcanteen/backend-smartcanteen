@@ -8,12 +8,21 @@ const loginSeller = Joi.object({
 const registerSeller = Joi.object({
     first_name : Joi.string().min(3).required(),
     last_name : Joi.string().min(3).required(),
-    email : Joi.string().email().required().error((errors) => new Error('email tidak tepat')),
-    no_telp : Joi.string().min(9).required().error((errors) => new Error('silahkan masukkan notelp dengan benar')),
-    password : Joi.string().required().min(6).error((errors) => new Error('Silahkan gunakan kombinasi caps dan angka')),
+    email : Joi.string().email().message('masukkan email dengan benar').required(),
+    no_telp : Joi.string().min(9).message('nomor telepon harus lebih dari 9').max(12).message('nomor telepon tidak boleh lebih dari 12').required(),
+    password : Joi.string().required().min(6),
+})
+
+const updateSeller = Joi.object({
+    first_name : Joi.string().min(3),
+    last_name : Joi.string().min(3),
+    email : Joi.string().email().message('masukkan email dengan benar'),
+    no_telp :Joi.string().min(9).message('nomor telepon harus lebih dari 9').max(12).message('nomor telepon tidak boleh lebih dari 12'),
+    password : Joi.string().min(6),
 })
 
 module.exports = {
     loginSeller,
-    registerSeller
+    registerSeller,
+    updateSeller
 }

@@ -31,7 +31,21 @@ router.route("/register")
     validateBody(sellerSchemas.registerSeller),
     sellerController.regisSeller
   )
-  
+
+router.route("/update")
+  .post(
+    authenticateToken,
+    validateBody(sellerSchemas.updateSeller),
+    sellerController.updateSeller
+  )
+
+router.route("/update/:id")
+  .post(
+    authenticateToken,
+    validateBody(sellerSchemas.updateSeller),
+    sellerController.updateSeller
+  )
+
 router.route('/:id')
   .get(
     authenticateToken,
