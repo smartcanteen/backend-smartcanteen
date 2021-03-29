@@ -36,16 +36,17 @@ async function regisSeller(req,res) {
 }
 
 async function detailSeller(req,res) {
-  const id = req.user.id_penjual
+  const id = req.params.id?req.params.id:req.user.id_penjual
   const seller = await Seller.findByPk(id)
   if (!seller) return res.sendError({},'Akun tidak ditemukan!',401)
+  if(req.params.id && !req.user.isAdmin) return res.sendError({},'MAaf anda tidak memiliki akses ini',401)
   else {
     let data = {}
     data.id_penjual = seller.id_penjual
     data.first_name = seller.first_name
     data.last_name = seller.last_name
     data.email = seller.email
-    res.sendResponse(data,'Sukses Login',200)
+    res.sendResponse(data,'Berikut detail dari penjual',200)
   }
 }
 
@@ -59,9 +60,27 @@ async function getAllSeller(req,res) {
     res.sendResponse(seller,'Sukses Login',200)
   }
 }
+
+async function updateSeller(req,res) {
+  const idSeller = req.params.id
+  const payload = req.body;
+  const seller = await Seller.findByPk(idSeller)
+  if (!seller) return response(res,false,null,'Akun penjual tidak ditemukan',401)
+  if (payload.first_name) seller.first_name = payload.first_name
+  if (payload.last_name) seller.last_name = payload.last_name
+  if (payload.email) seller.email = payload.email
+
+  if (payload.password) seller.password = encryptPass(payload.password)
+  if (payload.no_telp) seller.no_telp = payload.no_telp
+
+  await seller.save()
+  return response(res,true, seller,'seller sukses diupdate',200)
+}
+
 module.exports = {
   loginSeller,
   regisSeller,
   detailSeller,
-  getAllSeller
+  getAllSeller,
+  updateSeller
 }

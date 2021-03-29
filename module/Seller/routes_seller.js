@@ -11,6 +11,11 @@ router.route('/')
     authenticateToken,
     sellerController.detailSeller
   )
+router.route('/:id')
+  .get(
+    authenticateToken,
+    sellerController.detailSeller
+  )
 
 router.route('/all')
   .get(
