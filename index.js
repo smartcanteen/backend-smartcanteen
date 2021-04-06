@@ -48,6 +48,7 @@ app.use(response)
 // router
 const adminRoute = require('./module/Admin/routes_admin')
 const sellerRoute = require('./module/Seller/routes_seller')
+const foodRoute = require('./module/Food/routes_food')
 
 app.get('/', function(req,res){
   res.send('Hello')
@@ -55,6 +56,7 @@ app.get('/', function(req,res){
 
 app.use('/api/admin' , adminRoute)
 app.use('/api/penjual' , sellerRoute)
+app.use('/api/makanan' , foodRoute)
 
 // error handling
 app.use((req,res,next) => {
