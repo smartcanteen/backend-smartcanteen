@@ -2,9 +2,10 @@ const router = require("express-promise-router")()
 
 // validation
 const { validateBody } = require("../../helpers/validator/validateBody")
-const sellerController = require("./controller_seller")
+const controller_seller = require("./controller_seller")
 const sellerSchemas = require("../../schema/seller")
 const { authenticateToken } = require("../../middleware/auth")
+const sellerController = new controller_seller()
 
 router.route('/')
   .get(
