@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken')
 
-require('dotenv').config()
-
 function signUser(user) {
   return jwt.sign(user, process.env.tokenSecret, {  }) // 60detik * 30 = 30 menit
 }
