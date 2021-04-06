@@ -1,14 +1,18 @@
 const Joi = require('joi')
 
 const tambahMakanan = Joi.object({
-    first_name : Joi.string().min(3).required(),
-    last_name : Joi.string().min(3).required(),
-    email : Joi.string().email().required(),
-    no_telp : Joi.string().min(9).message('nomor telepon harus lebih dari 9').max(12).message('nomor telepon tidak boleh lebih dari 12').required(),
-    password : Joi.string().required().min(6),
+    nama : Joi.string().min(3).required(),
+    harga : Joi.string().min(3).required(),
+    ketersediaan : Joi.string().pattern(new RegExp('((?=.{4}$)true|(?=.{5}$)false)')).message('masukkan true atau false').required()
+})
+
+const updateMakanan = Joi.object({
+    nama : Joi.string().min(3),
+    harga : Joi.string().min(3),
+    ketersediaan : Joi.string().pattern(new RegExp('((?=.{4}$)true|(?=.{5}$)false)')).message('masukkan true atau false')
 })
 
 module.exports = {
-    loginSeller,
-    registerSeller
+    tambahMakanan,
+    updateMakanan
 }
