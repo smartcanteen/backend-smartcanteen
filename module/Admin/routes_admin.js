@@ -2,9 +2,10 @@ const router = require("express-promise-router")()
 
 // validation
 const { validateBody } = require("../../helpers/validator/validateBody")
-const adminController = require("./controller_admin")
+const controller_admin = require("./controller_admin")
 const adminSchemas = require("../../schema/admin")
 const { authenticateToken } = require("../../middleware/auth")
+const adminController = new controller_admin()
 
 router.route('/')
   .get(
