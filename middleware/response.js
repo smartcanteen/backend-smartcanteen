@@ -1,11 +1,10 @@
 module.exports = (req, res, next) => {
-
   // add code for middleware
   res.sendResponse = (data, message = null, status = 200) => {
     return res.status(status).send({
       success: true,
-      data: data,
-      message: message
+      data,
+      message,
     })
   }
 
@@ -13,8 +12,8 @@ module.exports = (req, res, next) => {
     if (data == null) data = {}
     return res.status(status).send({
       success: false,
-      data: data,
-      message: message
+      data,
+      message,
     })
   }
 

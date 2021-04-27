@@ -1,23 +1,23 @@
-const Sequelize = require('sequelize')
-const db = require('../config/database')
+const Sequelize = require("sequelize")
+const db = require("../config/database")
 
 const Order = db.define(
-  'order',
+  "order",
   {
     id_order: {
       allowNull: false,
       primaryKey: true,
       type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4
+      defaultValue: Sequelize.UUIDV4,
     },
-    id_pembeli : {
+    id_pembeli: {
       type: Sequelize.UUID,
-      allowNull : true
-    }
+      allowNull: true,
+    },
   },
   {
     paranoid: true,
-  }
+  },
 )
 
 module.exports = Order

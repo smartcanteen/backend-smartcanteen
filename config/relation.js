@@ -14,28 +14,32 @@ const Order = require("../models/order")
 const Table = require("../models/table")
 const Invoice = require("../models/invoice")
 const Payment = require("../models/payment")
-const Admin = require("../models/admin")
+const Tenant = require("../models/tenant")
+require("../models/admin")
 
 // Organizations.belongsToMany(Admin, {through: Organizations_Admin})
 // Admin.belongsToMany(Organizations, {through: Organizations_Admin})
 
-Food.belongsTo(Seller, { foreignKey: 'id_penjual' })
-Seller.hasMany(Food, { foreignKey: 'id_penjual' })
+Food.belongsTo(Tenant, { foreignKey: "id_warung" })
+Tenant.hasMany(Food, { foreignKey: "id_warung" })
 
-Order.belongsTo(Buyer, { foreignKey: 'id_pembeli' })
-Buyer.hasMany(Order, { foreignKey: 'id_pembeli' })
+Tenant.belongsTo(Seller, { foreignKey: "id_penjual" })
+Seller.hasOne(Tenant, { foreignKey: "id_penjual" })
 
-Order_Item.belongsTo(Order, { foreignKey: 'id_order' })
-Order.hasMany(Order_Item, { foreignKey: 'id_order' })
+Order.belongsTo(Buyer, { foreignKey: "id_pembeli" })
+Buyer.hasMany(Order, { foreignKey: "id_pembeli" })
 
-Order_Item.belongsTo(Food, { foreignKey: 'id_makanan' })
-Food.hasMany(Order_Item, { foreignKey: 'id_makanan' })
+Order_Item.belongsTo(Order, { foreignKey: "id_order" })
+Order.hasMany(Order_Item, { foreignKey: "id_order" })
 
-Buyer.belongsTo(Table, { foreignKey: 'id_meja' })
-Table.hasMany(Buyer, { foreignKey: 'id_meja' })
+Order_Item.belongsTo(Food, { foreignKey: "id_makanan" })
+Food.hasMany(Order_Item, { foreignKey: "id_makanan" })
 
-Invoice.belongsTo(Order, { foreignKey: 'id_order' })
-Order.hasMany(Invoice, { foreignKey: 'id_order' })
+Buyer.belongsTo(Table, { foreignKey: "id_meja" })
+Table.hasMany(Buyer, { foreignKey: "id_meja" })
 
-Payment.belongsTo(Invoice, { foreignKey: 'id_invoice' })
-Invoice.hasMany(Payment, { foreignKey: 'id_invoice' })
+Invoice.belongsTo(Order, { foreignKey: "id_order" })
+Order.hasMany(Invoice, { foreignKey: "id_order" })
+
+Payment.belongsTo(Invoice, { foreignKey: "id_invoice" })
+Invoice.hasMany(Payment, { foreignKey: "id_invoice" })

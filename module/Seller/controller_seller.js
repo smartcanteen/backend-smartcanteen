@@ -1,69 +1,99 @@
-const { signUser } = require('../../middleware/auth')
-const { encryptPass, isValid } = require('../../helpers/encrypt')
-const Seller = require('../../models/seller')
-const Food = require('../../models/food')
+const { signUser } = require("../../middleware/auth")
+const { encryptPass, isValid } = require("../../helpers/encrypt")
+const Seller = require("../../models/seller")
+const Food = require("../../models/food")
+const Tenant = require("../../models/tenant")
 
-class controller_seller{
-  constructor(){
-  }
-
-  async loginSeller(req,res) {
-    console.log('login Seller')
+class controller_seller {
+  async loginSeller(req, res) {
+    // console.log("login Seller")
     const payload = req.body
-    const seller = await Seller.findOne({where : {email: payload.email}, attributes: { exclude: ['deletedAt','updatedAt'] }})  
-    if (!seller) return res.sendError({},'Akun tidak ditemukan!',401)
-    if(isValid(payload.password, seller.password)) {
+    const seller = await Seller.findOne({
+      where: { email: payload.email },
+      attributes: { exclude: ["deletedAt", "updatedAt"] },
+    })
+    if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
+    if (isValid(payload.password, seller.password)) {
+      const tenant = await Tenant.findOne(
+        { 
+          where: { id_penjual: seller.id_penjual },
+          attributes: { exclude: ["deletedAt", "updatedAt"] },
+        })
+      console.log(tenant);
       let data = {
         ...seller.dataValues,
-        isAdmin : false,
-        isSeller : true,
+        id_warung: tenant?tenant.id_warung:null,
+        isAdmin: false,
+        isSeller: true,
       }
       delete data.password
       data.token = await signUser(data)
-      return res.sendResponse(data,'Sukses Login',200)
-    } else return res.sendError({},'Password salah!',401)
-    
+      return res.sendResponse(data, "Sukses Login", 200)
+    } else return res.sendError({}, "Password salah!", 401)
   }
 
-  async regisSeller(req,res) {
+  async regisSeller(req, res) {
     let payload = req.body
-    let seller = await Seller.findOne({where : {email: payload.email} })  
-    if (seller) return res.sendError({},'Akun sudah ada, silahkan gunakan email lainnya',401)
-    if (!req.user.isAdmin) return res.sendError({},'Anda bukan admin, silahkan kontak admin untuk lebih lanjut',401)
-    console.log(payload);
+    let seller = await Seller.findOne({ where: { email: payload.email } })
+    if (seller) {
+      return res.sendError(
+        {},
+        "Akun sudah ada, silahkan gunakan email lainnya",
+        401,
+      )
+    }
+    if (!req.user.isAdmin) {
+      return res.sendError(
+        {},
+        "Anda bukan admin, silahkan kontak admin untuk lebih lanjut",
+        401,
+      )
+    }
+    // console.log(payload)
     payload.password = encryptPass(payload.password)
     seller = new Seller(payload)
     await seller.save()
-    return res.sendResponse(seller,'Registrasi telah berhasil',201)
+    return res.sendResponse(seller, "Registrasi telah berhasil", 201)
   }
 
-  async detailSeller(req,res) {
-    const id_penjual = req.params.id?req.params.id:req.user.id_penjual
-    const seller = await Seller.findOne({ where: {id_penjual}, include: [Food], attributes: { exclude: ['password','deletedAt','updatedAt'] }})
-    if (!seller) return res.sendError({},'Akun tidak ditemukan!',401)
-    if(req.params.id && !req.user.isAdmin) return res.sendError({},'MAaf anda tidak memiliki akses ini',401)
-    else {
-      return res.sendResponse(seller,'Berikut detail dari penjual',200)
+  async detailSeller(req, res) {
+    const id_penjual = req.params.id ? req.params.id : req.user.id_penjual
+    const seller = await Seller.findOne({
+      where: { id_penjual },
+      include: {
+        model: Tenant,
+        include: [Food]
+      },
+      attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
+    })
+    if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
+    if (req.params.id && !req.user.isAdmin) { return res.sendError({}, "MAaf anda tidak memiliki akses ini", 401) } else {
+      return res.sendResponse(seller, "Berikut detail dari penjual", 200)
     }
   }
 
-  async getAllSeller(req,res) {
+  async getAllSeller(req, res) {
     // console.log("masuk");
-    const seller = await Seller.findAll({ include: [Food], attributes: { exclude: ['password','deletedAt','updatedAt'] }})
+    const seller = await Seller.findAll({
+      include: {
+        model: Tenant,
+        include: [Food]
+      },
+      attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
+    })
     // console.log(seller);
-    if (!seller) return res.sendError({},'Akun tidak ditemukan!',401)
-    else if (!req.user.isAdmin) return res.sendError({},'Maaf, anda bukan admin',401)
-    else {
-      return res.sendResponse(seller,'Sukses Login',200)
+    if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
+    else if (!req.user.isAdmin) { return res.sendError({}, "Maaf, anda bukan admin", 401) } else {
+      return res.sendResponse(seller, "Berikut detail dari semua penjual", 200)
     }
   }
 
-  async updateSeller(req,res) {
-    const idSeller = req.params.id?req.params.id:req.user.id_penjual
-    const payload = req.body;
+  async updateSeller(req, res) {
+    const idSeller = req.params.id ? req.params.id : req.user.id_penjual
+    const payload = req.body
     const seller = await Seller.findByPk(idSeller)
-    if (!seller) return res.sendError({},'Akun tidak ditemukan!',401)
-    if(req.params.id && !req.user.isAdmin) return res.sendError({},'Maaf anda tidak memiliki akses ini',401)
+    if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
+    if (req.params.id && !req.user.isAdmin) { return res.sendError({}, "Maaf anda tidak memiliki akses ini", 401) }
 
     // if (payload.first_name) seller.first_name = payload.first_name
     // if (payload.last_name) seller.last_name = payload.last_name
@@ -71,15 +101,14 @@ class controller_seller{
 
     // if (payload.password) seller.password = encryptPass(payload.password)
     // if (payload.no_telp) seller.no_telp = payload.no_telp
-    for (const key in payload){
-      if (key == 'password') seller[key] = encryptPass(payload[key])
+    for (const key in payload) {
+      if (key === "password") seller[key] = encryptPass(payload[key])
       else seller[key] = payload[key]
     }
 
     await seller.save()
-    return res.sendResponse(seller,'seller sukses diupdate',200)
+    return res.sendResponse(seller, "Data penjual sukses diupdate", 200)
   }
-
 }
 
 // module.exports = {

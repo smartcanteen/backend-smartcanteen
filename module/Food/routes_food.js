@@ -7,21 +7,23 @@ const foodSchemas = require("../../schema/food")
 const { authenticateToken } = require("../../middleware/auth")
 const foodController = new controller_food()
 
+router.route("/").get(foodController.getAllMakanan)
+
 router
   .route("/add")
   .post(
     authenticateToken,
     validateBody(foodSchemas.tambahMakanan),
-    foodController.tambahMakanan
+    foodController.tambahMakanan,
   )
-router.route("/all").get(authenticateToken, foodController.getAllMakanan)
+router.route("/all").get(authenticateToken,foodController.getAllMakanan)
 
 router
   .route("/update/:id")
   .post(
     authenticateToken,
     validateBody(foodSchemas.updateMakanan),
-    foodController.updateMakanan
+    foodController.updateMakanan,
   )
 
 router.route("/:id").get(authenticateToken, foodController.detailMakanan)

@@ -1,35 +1,35 @@
-const Sequelize = require('sequelize')
-const db = require('../config/database')
+const Sequelize = require("sequelize")
+const db = require("../config/database")
 
 const Food = db.define(
-  'food',
+  "food",
   {
     id_makanan: {
       allowNull: false,
       primaryKey: true,
       type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4
+      defaultValue: Sequelize.UUIDV4,
     },
-    nama : {
-      type : Sequelize.STRING,
-      allowNull : false
+    nama: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
-    harga : {
-      type : Sequelize.INTEGER,
-      allowNull : false
+    harga: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
     },
-    ketersediaan : {
-      type : Sequelize.BOOLEAN,
-      allowNull: false
+    ketersediaan: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
     },
-    id_penjual : {
+    id_warung: {
       type: Sequelize.UUID,
-      allowNull : true
+      allowNull: true,
     },
   },
   {
     paranoid: true,
-  }
+  },
 )
 
 module.exports = Food
