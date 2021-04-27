@@ -62,7 +62,6 @@ class controller_seller {
       where: { id_penjual },
       include: {
         model: Tenant,
-        include: [Food]
       },
       attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
     })
@@ -76,8 +75,7 @@ class controller_seller {
     // console.log("masuk");
     const seller = await Seller.findAll({
       include: {
-        model: Tenant,
-        include: [Food]
+        model: Tenant
       },
       attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
     })
