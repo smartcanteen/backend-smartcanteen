@@ -15,6 +15,7 @@ let allowedOrigins = [
   "http://localhost:5000",
   "http://localhost:3000",
   "http://localhost",
+  "https://smartcanteeen.netlify.app"
 ]
 
 app.use(
