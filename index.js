@@ -9,13 +9,31 @@ const response = require("./middleware/response")
 const db = require("./config/database")
 require("./config/relation")
 // const flamelinkApp = require('./config/flamelinkSDK')
+// const swaggerJsDoc = require('swagger-jsdoc')
+// const swaggerUi = require('swagger-ui-express')
+// const swaggerOptions = {
+//   swaggerDefinition: {
+//     info: {
+//       title: "SmartCanteen API",
+//       description: "Documentation of SmartCanteen Backend",
+//       contact: {
+//         name: "Admin"
+//       },
+//       servers: ["http://localhost:5000"]
+//     }
+//   },
+//   apis: ['./module/Admin/routes_admin.js']
+// }
 
+// const swaggerDocs = swaggerJsDoc(swaggerOptions)
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // cors
 let allowedOrigins = [
   "http://localhost:5000",
   "http://localhost:3000",
   "http://localhost",
-  "https://smartcanteeen.netlify.app"
+  "https://smartcanteen-admin.netlify.app",
+  "https://smartcanteen-client.netlify.app",
 ]
 
 app.use(
