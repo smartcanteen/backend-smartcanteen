@@ -44,13 +44,16 @@ class controller_food {
       },
     })
     if (req.query) {
-      const { id_warung, nama=" " } = req.query
+      const { id_warung, nama=" ", kategori="," } = req.query
       if (id_warung){
         food = await Food.findAll({
           where: {
             id_warung,
             nama: {
               [Op.regexp]: nama,
+            },
+            kategori: {
+              [Op.regexp]: kategori,
             },
             ketersediaan: true
           },
@@ -70,7 +73,10 @@ class controller_food {
             ketersediaan: true,
             nama: {
               [Op.regexp]: nama,
-            }
+            },
+            kategori: {
+              [Op.regexp]: kategori,
+            },
           },
           attributes: { exclude: ["deletedAt", "updatedAt"] },
           include: {

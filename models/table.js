@@ -14,9 +14,13 @@ const Table = db.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    status: {
-      type: Sequelize.BOOLEAN,
+    kapasitas: {
+      type: Sequelize.INTEGER,
       allowNull: false,
+    },
+    lokasi: {
+      type: Sequelize.STRING,
+      allowNull: true,
     },
   },
   {
