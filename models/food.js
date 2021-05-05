@@ -22,6 +22,10 @@ const Food = db.define(
       type: Sequelize.BOOLEAN,
       allowNull: false,
     },
+    kategori: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
     id_warung: {
       type: Sequelize.UUID,
       allowNull: true,

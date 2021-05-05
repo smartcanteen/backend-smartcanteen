@@ -62,6 +62,11 @@ class controller_seller {
       where: { id_penjual },
       include: {
         model: Tenant,
+        include: {
+          model: Food,
+          attributes: { exclude: ["deletedAt", "updatedAt"] },
+        },
+        attributes: { exclude: ["deletedAt", "updatedAt"] },
       },
       attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
     })
@@ -75,7 +80,12 @@ class controller_seller {
     // console.log("masuk");
     const seller = await Seller.findAll({
       include: {
-        model: Tenant
+        model: Tenant,
+        include: {
+          model: Food,
+          attributes: { exclude: ["deletedAt", "updatedAt"] },
+        },
+        attributes: { exclude: ["deletedAt", "updatedAt"] },
       },
       attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
     })
