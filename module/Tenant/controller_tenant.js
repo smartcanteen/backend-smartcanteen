@@ -5,11 +5,16 @@ const Food = require("../../models/food")
 const Tenant = require("../../models/tenant")
 
 class controller_tenant {
+  constructor() {
+    this.Seller = Seller
+    this.Food = Food
+    this.Tenant = Tenant
+  }
 
   async regisTenant(req, res) {
     let payload = req.body
     const { id_penjual, id_warung } = req.user
-    let tenant = await Tenant.findOne({ where: { nama_warung: payload.nama_warung } })
+    let tenant = await this.Tenant.findOne({ where: { nama_warung: payload.nama_warung } })
     if (tenant) {
       return res.sendError(
         {},
@@ -24,7 +29,7 @@ class controller_tenant {
         401,
       )
     }
-    tenant = await Tenant.findByPk(id_warung)
+    tenant = await this.Tenant.findByPk(id_warung)
     if (tenant) {
       return res.sendError(
         {},
@@ -33,9 +38,9 @@ class controller_tenant {
       )
     }
     // console.log(payload)
-    const seller = await Seller.findByPk(id_penjual)
+    const seller = await this.Seller.findByPk(id_penjual)
     console.log(seller.dataValues);
-    tenant = new Tenant(payload)
+    tenant = new this.Tenant(payload)
     await tenant.save()
     await tenant.setSeller(seller)
     return res.sendResponse(tenant, "Registrasi warung telah berhasil", 201)
@@ -43,14 +48,14 @@ class controller_tenant {
 
   async detailTenant(req, res) {
     const id_warung = req.user.id_warung ? req.user.id_warung : req.params.id
-    const tenant = await Tenant.findOne({
+    const tenant = await this.Tenant.findOne({
       where: { id_warung },
       include: [{
-        model: Seller,
+        model: this.Seller,
         attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
       },
       {
-        model: Food,
+        model: this.Food,
         attributes: { exclude: ["deletedAt", "updatedAt"] },
       }],
       attributes: { exclude: ["deletedAt", "updatedAt"] },
@@ -61,13 +66,13 @@ class controller_tenant {
 
   async getAllTenant(req, res) {
     // console.log("masuk");
-    const tenant = await Tenant.findAll({
+    const tenant = await this.Tenant.findAll({
       include: [{
-        model: Seller,
+        model: this.Seller,
         attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
       },
       {
-        model: Food,
+        model: this.Food,
         attributes: { exclude: ["deletedAt", "updatedAt"] },
       }],
       attributes: { exclude: ["deletedAt", "updatedAt"] },
@@ -80,7 +85,7 @@ class controller_tenant {
   async updateTenant(req, res) {
     const id_warung = req.user.id_warung ? req.user.id_warung : req.params.id
     const payload = req.body
-    const tenant = await Tenant.findByPk(id_warung)
+    const tenant = await this.Tenant.findByPk(id_warung)
     if (!tenant) return res.sendError({}, "Akun tidak ditemukan!", 401)
     if (req.params.id && !req.user.isAdmin) { return res.sendError({}, "Maaf anda tidak memiliki akses ini", 401) }
 

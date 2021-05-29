@@ -6,6 +6,12 @@ const Seller = require("../../models/seller")
 const Tenant = require("../../models/tenant")
 
 class controller_food {
+  constructor() {
+    this.Food = Food
+    this.Seller = Seller
+    this.Tenant = Tenant
+  }
+
   async tambahMakanan(req, res) {
     let payload = req.body
     // let food = await Food.findOne({where : {nama: payload.nama} })
@@ -18,13 +24,13 @@ class controller_food {
       )
     }
     const { id_warung } = req.user
-    let food = await Food.findOne({
+    let food = await this.Food.findOne({
       where: { id_warung, nama: payload.nama },
       attributes: { exclude: ["deletedAt", "updatedAt"] },
     })
     if (food) return res.sendError({}, "Makanan sudah pernah ditambahkan", 401)
-    const tenant = await Tenant.findByPk(id_warung)
-    food = new Food(payload)
+    const tenant = await this.Tenant.findByPk(id_warung)
+    food = new this.Food(payload)
     await food.setTenant(tenant)
     await food.save()
     return res.sendResponse(food, "Makanan berhasil ditambahkan", 201)
@@ -32,13 +38,13 @@ class controller_food {
 
   async getAllMakanan(req, res) {
     // const seller = await Seller.findByPk(id_warung)
-    let food = await Food.findAll({
+    let food = await this.Food.findAll({
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: {
-        model: Tenant,
+        model: this.Tenant,
         attributes: { exclude: ["deletedAt", "updatedAt"] },
         include: {
-          model: Seller,
+          model: this.Seller,
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       },
@@ -46,7 +52,7 @@ class controller_food {
     if (req.query) {
       const { id_warung, nama=" ", kategori="," } = req.query
       if (id_warung){
-        food = await Food.findAll({
+        food = await this.Food.findAll({
           where: {
             id_warung,
             nama: {
@@ -59,16 +65,16 @@ class controller_food {
           },
           attributes: { exclude: ["deletedAt", "updatedAt"] },
           include: {
-            model: Tenant,
+            model: this.Tenant,
             attributes: { exclude: ["deletedAt", "updatedAt"] },
             include: {
-              model: Seller,
+              model: this.Seller,
               attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
             },
           },
         })
       }else {
-        food = await Food.findAll({
+        food = await this.Food.findAll({
           where: {
             ketersediaan: true,
             nama: {
@@ -80,10 +86,10 @@ class controller_food {
           },
           attributes: { exclude: ["deletedAt", "updatedAt"] },
           include: {
-            model: Tenant,
+            model: this.Tenant,
             attributes: { exclude: ["deletedAt", "updatedAt"] },
             include: {
-              model: Seller,
+              model: this.Seller,
               attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
             },
           },
@@ -92,7 +98,7 @@ class controller_food {
     }
     if (req.user && req.user.isSeller) {
       const id_warung = req.user.id_warung
-      food = await Food.findAll({
+      food = await this.Food.findAll({
         where: { id_warung },
         attributes: { exclude: ["deletedAt", "updatedAt"] },
       })
@@ -102,14 +108,14 @@ class controller_food {
 
   async detailMakanan(req, res) {
     const id_makanan = req.params.id
-    const food = await Food.findOne({
+    const food = await this.Food.findOne({
       where: { id_makanan },
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: {
-        model: Tenant,
+        model: this.Tenant,
         attributes: { exclude: ["deletedAt", "updatedAt"] },
         include: {
-          model: Seller,
+          model: this.Seller,
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       },
@@ -121,14 +127,14 @@ class controller_food {
   async updateMakanan(req, res) {
     const id_makanan = req.params.id
     const payload = req.body
-    const food = await Food.findOne({
+    const food = await this.Food.findOne({
       where: { id_makanan },
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: {
-        model: Tenant,
+        model: this.Tenant,
         attributes: { exclude: ["deletedAt", "updatedAt"] },
         include: {
-          model: Seller,
+          model: this.Seller,
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       },

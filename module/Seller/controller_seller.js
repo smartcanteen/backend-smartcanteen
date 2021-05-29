@@ -5,16 +5,22 @@ const Food = require("../../models/food")
 const Tenant = require("../../models/tenant")
 
 class controller_seller {
+  constructor() {
+    this.Seller = Seller
+    this.Food = Food
+    this.Tenant = Tenant
+  }
+  
   async loginSeller(req, res) {
     // console.log("login Seller")
     const payload = req.body
-    const seller = await Seller.findOne({
+    const seller = await this.Seller.findOne({
       where: { email: payload.email },
       attributes: { exclude: ["deletedAt", "updatedAt"] },
     })
     if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
     if (isValid(payload.password, seller.password)) {
-      const tenant = await Tenant.findOne(
+      const tenant = await this.Tenant.findOne(
         { 
           where: { id_penjual: seller.id_penjual },
           attributes: { exclude: ["deletedAt", "updatedAt"] },
@@ -34,7 +40,7 @@ class controller_seller {
 
   async regisSeller(req, res) {
     let payload = req.body
-    let seller = await Seller.findOne({ where: { email: payload.email } })
+    let seller = await this.Seller.findOne({ where: { email: payload.email } })
     if (seller) {
       return res.sendError(
         {},
@@ -51,19 +57,19 @@ class controller_seller {
     }
     // console.log(payload)
     payload.password = encryptPass(payload.password)
-    seller = new Seller(payload)
+    seller = new this.Seller(payload)
     await seller.save()
     return res.sendResponse(seller, "Registrasi telah berhasil", 201)
   }
 
   async detailSeller(req, res) {
     const id_penjual = req.user.id_penjual ? req.user.id_penjual : req.params.id
-    const seller = await Seller.findOne({
+    const seller = await this.Seller.findOne({
       where: { id_penjual },
       include: {
-        model: Tenant,
+        model: this.Tenant,
         include: {
-          model: Food,
+          model: this.Food,
           attributes: { exclude: ["deletedAt", "updatedAt"] },
         },
         attributes: { exclude: ["deletedAt", "updatedAt"] },
@@ -78,11 +84,11 @@ class controller_seller {
 
   async getAllSeller(req, res) {
     // console.log("masuk");
-    const seller = await Seller.findAll({
+    const seller = await this.Seller.findAll({
       include: {
-        model: Tenant,
+        model: this.Tenant,
         include: {
-          model: Food,
+          model: this.Food,
           attributes: { exclude: ["deletedAt", "updatedAt"] },
         },
         attributes: { exclude: ["deletedAt", "updatedAt"] },
@@ -99,7 +105,7 @@ class controller_seller {
   async updateSeller(req, res) {
     const idSeller = req.user.id_penjual ? req.user.id_penjual : req.params.id
     const payload = req.body
-    const seller = await Seller.findByPk(idSeller)
+    const seller = await this.Seller.findByPk(idSeller)
     if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
     if (req.params.id && !req.user.isAdmin) { return res.sendError({}, "Maaf anda tidak memiliki akses ini", 401) }
 

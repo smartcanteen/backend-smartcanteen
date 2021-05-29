@@ -8,6 +8,13 @@ const Order_Item = require("../../models/order_item")
 const Order = require("../../models/order")
 
 class controller_order {
+  constructor() {
+    this.Buyer = Buyer
+    this.Food = Food
+    this.Order_Item = Order_Item
+    this.Order = Order
+  }
+
   async orderMakanan(req, res) {
     const id_pembeli = req.query.id
 
@@ -16,8 +23,8 @@ class controller_order {
 
     const data = JSON.parse(payload.pesanan)
     // const data = JSON.parse(dummy)
-    const order = new Order()
-    const buyer = await Buyer.findByPk(id_pembeli)
+    const order = new this.Order()
+    const buyer = await this.Buyer.findByPk(id_pembeli)
     await order.setBuyer(buyer)
     for (let pesanan of data) {
       console.log(pesanan)
@@ -26,14 +33,14 @@ class controller_order {
         total_harga_item: pesanan.qty * pesanan.harga,
         catatan: pesanan.catatan,
       }
-      const orderItem = new Order_Item(data)
-      const food = await Food.findByPk(pesanan.id_makanan)
+      const orderItem = new this.Order_Item(data)
+      const food = await this.Food.findByPk(pesanan.id_makanan)
       await orderItem.setFood(food)
       await orderItem.setOrder(order)
       await orderItem.save()
     }
 
-    const fixOrder = await Order.findOne({
+    const fixOrder = await this.Order.findOne({
       where: { id_order: order.id_order },
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: {
@@ -50,7 +57,7 @@ class controller_order {
 
   async getOrder(req, res) {
     const id_order = req.params.id
-    const order = await Order.findOne({
+    const order = await this.Order.findOne({
       where: { id_order },
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: {
@@ -68,16 +75,16 @@ class controller_order {
 
   async getOrderByWarung(req, res) {
     const id_warung = req.user.id_warung ? req.user.id_warung : req.params.id
-    const order = await Order_Item.findAll({
+    const order = await this.Order_Item.findAll({
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: [
         {
-          model: Food,
+          model: this.Food,
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
           where: { id_warung }
         },
         {
-          model: Order,
+          model: this.Order,
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       ],
@@ -91,16 +98,16 @@ class controller_order {
     const id_order_item = req.params.id
     const status = req.params.status
     const payload = req.body
-    const order = await Order_Item.findOne({
+    const order = await this.Order_Item.findOne({
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       where: { id_order_item },
       include: [
         {
-          model: Food,
+          model: this.Food,
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
         {
-          model: Order,
+          model: this.Order,
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       ],

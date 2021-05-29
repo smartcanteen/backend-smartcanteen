@@ -3,10 +3,14 @@ const { encryptPass, isValid } = require("../../helpers/encrypt")
 const Admin = require("../../models/admin")
 
 class controller_admin {
+  constructor() {
+    this.Admin = Admin
+  }
+
   async loginAdmin(req, res) {
     // console.log("login Admin")
     const payload = req.body
-    const admin = await Admin.findOne({ where: { email: payload.email } })
+    const admin = await this.Admin.findOne({ where: { email: payload.email } })
     if (!admin) return res.sendError({}, "Akun tidak ditemukan!", 401)
     if (isValid(payload.password, admin.password)) {
       let data = {
@@ -29,7 +33,7 @@ class controller_admin {
 
   async regisAdmin(req, res) {
     let payload = req.body
-    let admin = await Admin.findOne({ where: { email: payload.email } })
+    let admin = await this.Admin.findOne({ where: { email: payload.email } })
     if (admin) {
       return res.sendError(
         {},
@@ -45,7 +49,7 @@ class controller_admin {
 
   async detailAdmin(req, res) {
     const id = req.user.id_admin
-    const admin = await Admin.findByPk(id)
+    const admin = await this.Admin.findByPk(id)
     if (!admin) { return res.sendError(res, false, null, "Akun tidak ditemukan!", 401) } else {
       let data = {}
       data.id_admin = admin.id_admin
