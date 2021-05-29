@@ -20,11 +20,6 @@ class controller_admin {
         last_name: admin.last_name,
         email: admin.email,
       }
-      // data.isAdmin = true
-      // data.id_admin = admin.id_admin
-      // data.first_name = admin.first_name
-      // data.last_name = admin.last_name
-      // data.email = admin.email
       const token = signUser(data)
       data.token = token
       return res.sendResponse(data, "Sukses Login", 200)

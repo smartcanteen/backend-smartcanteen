@@ -19,10 +19,7 @@ class controller_order {
     const id_pembeli = req.query.id
 
     let payload = req.body
-    // const dummy = `[{"id_makanan":"d25e19d9-3d3b-45ed-8ca8-de4195070b45","nama":"Es Teh Manis","harga":20000,"ketersediaan":true,"id_warung":"11cc180d-6358-4cd3-af5a-937f01f891de","createdAt":"2021-04-27 11:26:39","qty":2,"catatan":"Gapake sambel"},{"id_makanan":"ab3df1e4-3777-4a4b-9d45-ef983a696aac","nama":"Mie Ayam Tek Tek","harga":25000,"ketersediaan":true,"id_warung":"11cc180d-6358-4cd3-af5a-937f01f891de","createdAt":"2021-04-27 12:14:06","qty":2,"catatan":"Gapake sambel"}]`
-
     const data = JSON.parse(payload.pesanan)
-    // const data = JSON.parse(dummy)
     const order = new this.Order()
     const buyer = await this.Buyer.findByPk(id_pembeli)
     await order.setBuyer(buyer)
