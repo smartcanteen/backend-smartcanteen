@@ -42,7 +42,7 @@ class controller_tenant {
   }
 
   async detailTenant(req, res) {
-    const id_warung = req.params.id ? req.params.id : req.user.id_warung
+    const id_warung = req.user.id_warung ? req.user.id_warung : req.params.id
     const tenant = await Tenant.findOne({
       where: { id_warung },
       include: [{
@@ -78,7 +78,7 @@ class controller_tenant {
   }
 
   async updateTenant(req, res) {
-    const id_warung = req.params.id ? req.params.id : req.user.id_warung
+    const id_warung = req.user.id_warung ? req.user.id_warung : req.params.id
     const payload = req.body
     const tenant = await Tenant.findByPk(id_warung)
     if (!tenant) return res.sendError({}, "Akun tidak ditemukan!", 401)

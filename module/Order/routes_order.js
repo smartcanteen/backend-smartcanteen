@@ -9,8 +9,16 @@ const orderController = new controller_order()
 
 router.route("/").post(orderController.orderMakanan)
 
-// router.route("/all").get(authenticateToken, sellerController.getAllSeller)
+router.route("/warung").get(authenticateToken, orderController.getOrderByWarung)
+router.route("/warung/:id").get(authenticateToken, orderController.getOrderByWarung)
 
+router
+  .route("/update/:id/:status")
+  .post(
+    authenticateToken,
+    // validateBody(sellerSchemas.updateSeller),
+    orderController.updateStatus,
+  )
 // router
 //   .route("/login")
 //   .post(validateBody(sellerSchemas.loginSeller), sellerController.loginSeller)
@@ -24,7 +32,7 @@ router.route("/").post(orderController.orderMakanan)
 //   )
 
 // router
-//   .route("/update")
+//   .route("/update/:id/:status")
 //   .post(
 //     authenticateToken,
 //     validateBody(sellerSchemas.updateSeller),

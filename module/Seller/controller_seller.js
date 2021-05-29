@@ -57,7 +57,7 @@ class controller_seller {
   }
 
   async detailSeller(req, res) {
-    const id_penjual = req.params.id ? req.params.id : req.user.id_penjual
+    const id_penjual = req.user.id_penjual ? req.user.id_penjual : req.params.id
     const seller = await Seller.findOne({
       where: { id_penjual },
       include: {
@@ -97,7 +97,7 @@ class controller_seller {
   }
 
   async updateSeller(req, res) {
-    const idSeller = req.params.id ? req.params.id : req.user.id_penjual
+    const idSeller = req.user.id_penjual ? req.user.id_penjual : req.params.id
     const payload = req.body
     const seller = await Seller.findByPk(idSeller)
     if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)

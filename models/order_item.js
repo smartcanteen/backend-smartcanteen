@@ -27,7 +27,7 @@ const Order_Item = db.define(
       allowNull: true,
     },
     status: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: true,
     },
     total_harga_item: {
