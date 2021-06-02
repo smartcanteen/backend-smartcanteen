@@ -64,7 +64,7 @@ class controller_seller {
 
   async detailSeller(req, res) {
     const id_penjual = req.user.id_penjual ? req.user.id_penjual : req.params.id
-    const seller = await this.Seller.findOne({
+    const option = {
       where: { id_penjual },
       include: {
         model: this.Tenant,
@@ -75,7 +75,8 @@ class controller_seller {
         attributes: { exclude: ["deletedAt", "updatedAt"] },
       },
       attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
-    })
+    }
+    const seller = await this.Seller.findOne(option)
     if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
     if (req.params.id && !req.user.isAdmin) { return res.sendError({}, "MAaf anda tidak memiliki akses ini", 401) } else {
       return res.sendResponse(seller, "Berikut detail dari penjual", 200)
@@ -84,7 +85,7 @@ class controller_seller {
 
   async getAllSeller(req, res) {
     // console.log("masuk");
-    const seller = await this.Seller.findAll({
+    const option = {
       include: {
         model: this.Tenant,
         include: {
@@ -94,7 +95,8 @@ class controller_seller {
         attributes: { exclude: ["deletedAt", "updatedAt"] },
       },
       attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
-    })
+    }
+    const seller = await this.Seller.findAll(option)
     // console.log(seller);
     if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
     else if (!req.user.isAdmin) { return res.sendError({}, "Maaf, anda bukan admin", 401) } else {

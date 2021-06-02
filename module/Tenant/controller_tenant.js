@@ -14,7 +14,8 @@ class controller_tenant {
   async regisTenant(req, res) {
     let payload = req.body
     const { id_penjual, id_warung } = req.user
-    let tenant = await this.Tenant.findOne({ where: { nama_warung: payload.nama_warung } })
+    const { nama_warung } = payload
+    let tenant = await this.Tenant.findOne({ where: { nama_warung } })
     if (tenant) {
       return res.sendError(
         {},

@@ -45,7 +45,8 @@ class controller_admin {
   async detailAdmin(req, res) {
     const id = req.user.id_admin
     const admin = await this.Admin.findByPk(id)
-    if (!admin) { return res.sendError(res, false, null, "Akun tidak ditemukan!", 401) } else {
+    if (!admin) { return res.sendError(res, false, null, "Akun tidak ditemukan!", 401) } 
+    else {
       let data = {}
       data.id_admin = admin.id_admin
       data.first_name = admin.first_name

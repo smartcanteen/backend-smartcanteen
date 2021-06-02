@@ -36,8 +36,7 @@ class controller_order {
       await orderItem.setOrder(order)
       await orderItem.save()
     }
-
-    const fixOrder = await this.Order.findOne({
+    const option = {
       where: { id_order: order.id_order },
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: {
@@ -48,13 +47,14 @@ class controller_order {
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       },
-    })
+    }
+    const fixOrder = await this.Order.findOne(option)
     return res.sendResponse(fixOrder, "Order Makanan Berhasil", 200)
   }
 
   async getOrder(req, res) {
     const id_order = req.params.id
-    const order = await this.Order.findOne({
+    const option = {
       where: { id_order },
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: {
@@ -65,14 +65,15 @@ class controller_order {
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       },
-    })
+    }
+    const order = await this.Order.findOne(option)
     if (!order) return res.sendError({}, "Order tidak ditemukan", 404)
     return res.sendResponse(order, "Berikut detail ordernya", 200)
   }
 
   async getOrderByWarung(req, res) {
     const id_warung = req.user.id_warung ? req.user.id_warung : req.params.id
-    const order = await this.Order_Item.findAll({
+    const option = {
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: [
         {
@@ -85,7 +86,8 @@ class controller_order {
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       ],
-    })
+    }
+    const order = await this.Order_Item.findAll(option)
     if (req.params.id && !req.user.isAdmin) { return res.sendError({}, "Maaf anda tidak memiliki akses ini", 401) }
     if (!order) return res.sendError({}, "Order tidak ditemukan", 404)
     return res.sendResponse(order, "Berikut detail ordernya", 200)
@@ -95,7 +97,7 @@ class controller_order {
     const id_order_item = req.params.id
     const status = req.params.status
     const payload = req.body
-    const order = await this.Order_Item.findOne({
+    const option = {
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       where: { id_order_item },
       include: [
@@ -108,7 +110,8 @@ class controller_order {
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       ],
-    })
+    }
+    const order = await this.Order_Item.findOne(option)
     if (!order) return res.sendError({}, "Order tidak ditemukan", 404)
     if (status > 4 || status < 0) return res.sendError({}, "Status tidak terdaftar", 404)
     order.status = status 

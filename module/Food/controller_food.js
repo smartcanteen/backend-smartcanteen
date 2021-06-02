@@ -38,7 +38,7 @@ class controller_food {
 
   async getAllMakanan(req, res) {
     // const seller = await Seller.findByPk(id_warung)
-    let food = await this.Food.findAll({
+    const option = {
       attributes: { exclude: ["deletedAt", "updatedAt"] },
       include: {
         model: this.Tenant,
@@ -48,11 +48,12 @@ class controller_food {
           attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
         },
       },
-    })
+    }
+    let food = await this.Food.findAll(option)
     if (req.query) {
       const { id_warung, nama=" ", kategori="," } = req.query
       if (id_warung){
-        food = await this.Food.findAll({
+        const optionWithIdWarung = {
           where: {
             id_warung,
             nama: {
@@ -72,9 +73,10 @@ class controller_food {
               attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
             },
           },
-        })
+        }
+        food = await this.Food.findAll(optionWithIdWarung)
       }else {
-        food = await this.Food.findAll({
+        const optionWithParam = {
           where: {
             ketersediaan: true,
             nama: {
@@ -93,7 +95,8 @@ class controller_food {
               attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
             },
           },
-        })
+        }
+        food = await this.Food.findAll(optionWithParam)
       }
     }
     if (req.user && req.user.isSeller) {
