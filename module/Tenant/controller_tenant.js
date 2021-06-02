@@ -49,7 +49,7 @@ class controller_tenant {
 
   async detailTenant(req, res) {
     const id_warung = req.user.id_warung ? req.user.id_warung : req.params.id
-    const tenant = await this.Tenant.findOne({
+    const option = {
       where: { id_warung },
       include: [{
         model: this.Seller,
@@ -60,14 +60,15 @@ class controller_tenant {
         attributes: { exclude: ["deletedAt", "updatedAt"] },
       }],
       attributes: { exclude: ["deletedAt", "updatedAt"] },
-    })
+    }
+    const tenant = await this.Tenant.findOne(option)
     if (!tenant) return res.sendError({}, "Warung tidak ditemukan!", 401)
     return res.sendResponse(tenant, "Berikut detail dari warung", 200)
   }
 
   async getAllTenant(req, res) {
     // console.log("masuk");
-    const tenant = await this.Tenant.findAll({
+    const option = {
       include: [{
         model: this.Seller,
         attributes: { exclude: ["password", "deletedAt", "updatedAt"] },
@@ -77,7 +78,8 @@ class controller_tenant {
         attributes: { exclude: ["deletedAt", "updatedAt"] },
       }],
       attributes: { exclude: ["deletedAt", "updatedAt"] },
-    })
+    }
+    const tenant = await this.Tenant.findAll(option)
     // console.log(seller);
     if (!tenant) return res.sendError({}, "Akun tidak ditemukan!", 401)
     return res.sendResponse(tenant, "Berikut detail dari semua warung", 200)
