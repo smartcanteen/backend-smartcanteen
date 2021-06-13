@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const Food = require("../../models/food")
 const Seller = require("../../models/seller")
 const Tenant = require("../../models/tenant")
+const db = require("../../config/database")
 
 class controller_food {
   async tambahMakanan(req, res) {
@@ -100,6 +101,102 @@ class controller_food {
     return res.sendResponse(food, "Berikut detail dari semua makanan", 201)
   }
 
+  async getAllMakananManyOrder(req, res) {
+    // const seller = await Seller.findByPk(id_warung)
+    console.log("masuk");
+    let food = await Food.findAll({
+      attributes: { 
+        exclude: ["deletedAt", "updatedAt"] ,
+        include: [
+          [
+            db.literal(`(
+              SELECT COUNT(*)
+              FROM order_items AS order_items
+              WHERE
+                order_items.id_makanan = food.id_makanan
+            )`),
+            'manyOrder'
+          ]
+        ],
+      },
+      order: [
+        [db.literal('manyOrder'), 'DESC']
+      ]
+    })
+    // console.log(food);
+    if (req.query) {
+      const { id_warung, nama=" ", kategori="," } = req.query
+      if (id_warung){
+        food = await Food.findAll({
+          where: {
+            id_warung
+          },
+          attributes: { 
+            exclude: ["deletedAt", "updatedAt"] ,
+            include: [
+              [
+                db.literal(`(
+                  SELECT COUNT(*)
+                  FROM order_items AS order_items
+                  WHERE
+                    order_items.id_makanan = food.id_makanan
+                )`),
+                'manyOrder'
+              ]
+            ],
+          },
+          order: [
+            [db.literal('manyOrder'), 'DESC']
+          ]
+        })
+      }else {
+        food = await Food.findAll({
+          attributes: { 
+            // exclude: ["deletedAt", "updatedAt"] ,
+            include: [
+              [
+                db.literal(`(
+                  SELECT COUNT(*)
+                  FROM order_items AS order_items
+                  WHERE
+                    order_items.id_makanan = food.id_makanan
+                )`),
+                'manyOrder'
+              ]
+            ],
+          },
+          order: [
+            [db.literal('manyOrder'), 'DESC']
+          ]
+        })
+      }
+    }
+    if (req.user && req.user.isSeller) {
+      const id_warung = req.user.id_warung
+      food = await Food.findAll({
+        where: { id_warung },
+        attributes: { 
+          exclude: ["deletedAt", "updatedAt"] ,
+          include: [
+            [
+              db.literal(`(
+                SELECT COUNT(*)
+                FROM order_items AS order_items
+                WHERE
+                  order_items.id_makanan = food.id_makanan
+              )`),
+              'manyOrder'
+            ]
+          ],
+        },
+        order: [
+          [db.literal('manyOrder'), 'DESC']
+        ]
+      })
+    }
+    return res.sendResponse(food, "Berikut detail dari semua makanan", 201)
+  }
+
   async detailMakanan(req, res) {
     const id_makanan = req.params.id
     const food = await Food.findOne({
@@ -134,7 +231,7 @@ class controller_food {
       },
     })
     if (!food) return res.sendError({}, "Makanan tidak ditemukan!", 401)
-    if (!req.user.isAdmin && food.id_penjual !== req.user.id_penjual) { return res.sendError({}, "Maaf anda tidak memiliki akses ini", 401) }
+    if (!req.user.isAdmin && food.tenant.seller.id_penjual !== req.user.id_penjual) { return res.sendError({}, "Maaf anda tidak memiliki akses ini", 401) }
     for (const key in payload) {
       food[key] = payload[key]
     }

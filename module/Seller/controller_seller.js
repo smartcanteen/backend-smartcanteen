@@ -99,6 +99,7 @@ class controller_seller {
   async updateSeller(req, res) {
     const idSeller = req.user.id_penjual ? req.user.id_penjual : req.params.id
     const payload = req.body
+    console.log(payload);
     const seller = await Seller.findByPk(idSeller)
     if (!seller) return res.sendError({}, "Akun tidak ditemukan!", 401)
     if (req.params.id && !req.user.isAdmin) { return res.sendError({}, "Maaf anda tidak memiliki akses ini", 401) }

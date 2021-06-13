@@ -33,7 +33,8 @@ const updateSeller = Joi.object({
   first_name: Joi.string().min(3),
   last_name: Joi.string().min(3),
   email: Joi.string().email().message("masukkan email dengan benar"),
-  no_telp: Joi.string()
+  no_telp: Joi
+    .number()
     .min(9)
     .message("nomor telepon harus lebih dari 9")
     .max(12)

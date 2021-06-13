@@ -17,6 +17,7 @@ router
     foodController.tambahMakanan,
   )
 router.route("/all").get(authenticateToken,foodController.getAllMakanan)
+router.route("/all/manyOrder").get(authenticateToken,foodController.getAllMakananManyOrder)
 
 router
   .route("/update/:id")

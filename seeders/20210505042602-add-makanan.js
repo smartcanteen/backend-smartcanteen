@@ -17,7 +17,7 @@ module.exports = {
       nama: 'Risoles Mayo',
       harga: 10000,
       ketersediaan: true,
-      kategori: "cemilan,murah",
+      kategori: "Makanan Ringan",
       id_warung: "494638a3-5789-44e5-8e12-47186495a831",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -26,7 +26,7 @@ module.exports = {
       nama: 'Mie Ayam Komplit',
       harga: 25000,
       ketersediaan: true,
-      kategori: "mie ayam,murah",
+      kategori: "Mi,Bakso & Soto",
       id_warung: "494638a3-5789-44e5-8e12-47186495a831",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -35,7 +35,7 @@ module.exports = {
       nama: 'Nasi Goreng',
       harga: 18000,
       ketersediaan: true,
-      kategori: "nasi,sarapan",
+      kategori: "Nasi,Sarapan",
       id_warung: "494638a3-5789-44e5-8e12-47186495a831",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -44,7 +44,7 @@ module.exports = {
       nama: 'Nasi Goreng',
       harga: 15000,
       ketersediaan: true,
-      kategori: "nasi,murah",
+      kategori: "Nasi,Sarapan",
       id_warung: "d18229c0-3ba0-4df9-bb21-da955ccc83e6",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -53,7 +53,7 @@ module.exports = {
       nama: 'Es Teh Manis',
       harga: 10000,
       ketersediaan: true,
-      kategori: "minuman,dingin,manis",
+      kategori: "Minuman",
       id_warung: "d18229c0-3ba0-4df9-bb21-da955ccc83e6",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -62,7 +62,7 @@ module.exports = {
       nama: 'Nasi Rendang',
       harga: 20000,
       ketersediaan: true,
-      kategori: "nasi,daging",
+      kategori: "Nasi,Daging",
       id_warung: "d18229c0-3ba0-4df9-bb21-da955ccc83e6",
       createdAt: new Date(),
       updatedAt: new Date()

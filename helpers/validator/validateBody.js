@@ -2,6 +2,7 @@
 
 const validateBody = (schema) => {
   return async (req, res, next) => {
+    console.log(req.body)
     const result = schema.validate(req.body, { abortEarly: false })
     // console.log("result")
     // console.log(result.error.details)
