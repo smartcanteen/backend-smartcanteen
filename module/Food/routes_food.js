@@ -8,6 +8,8 @@ const { authenticateToken } = require("../../middleware/auth")
 const foodController = new controller_food()
 
 router.route("/").get(foodController.getAllMakanan)
+router.route("/murah").get(foodController.getAllMakananOrderByHargaMurah)
+router.route("/manyOrder").get(foodController.getAllMakananManyOrder)
 
 router
   .route("/add")

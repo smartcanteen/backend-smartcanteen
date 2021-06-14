@@ -129,7 +129,15 @@ class controller_food {
       if (id_warung){
         food = await Food.findAll({
           where: {
-            id_warung
+            id_warung,
+            ketersediaan: true,
+            nama: {
+              [Op.regexp]: nama,
+            },
+            kategori: {
+              [Op.regexp]: kategori,
+            },
+            
           },
           attributes: { 
             exclude: ["deletedAt", "updatedAt"] ,
@@ -151,6 +159,16 @@ class controller_food {
         })
       }else {
         food = await Food.findAll({
+          where: {
+            ketersediaan: true,
+            nama: {
+              [Op.regexp]: nama,
+            },
+            kategori: {
+              [Op.regexp]: kategori,
+            },
+            
+          },
           attributes: { 
             // exclude: ["deletedAt", "updatedAt"] ,
             include: [
@@ -191,6 +209,75 @@ class controller_food {
         },
         order: [
           [db.literal('manyOrder'), 'DESC']
+        ]
+      })
+    }
+    return res.sendResponse(food, "Berikut detail dari semua makanan", 201)
+  }
+
+  async getAllMakananOrderByHargaMurah(req, res) {
+    // const seller = await Seller.findByPk(id_warung)
+    console.log("masuk");
+    let food = await Food.findAll({
+      attributes: { 
+        exclude: ["deletedAt", "updatedAt"]
+      },
+      order: [
+        ['harga']
+      ]
+    })
+    console.log(req.query);
+    if (req.query) {
+      const { id_warung, nama=" ", kategori="," } = req.query
+      if (id_warung){
+        food = await Food.findAll({
+          where: {
+            id_warung,
+            ketersediaan: true,
+            nama: {
+              [Op.regexp]: nama,
+            },
+            kategori: {
+              [Op.regexp]: kategori,
+            },
+            
+          },
+          attributes: { 
+            exclude: ["deletedAt", "updatedAt"]
+          },
+          order: [
+            ['harga']
+          ]
+        })
+      }else {
+        food = await Food.findAll({
+          where: {
+            ketersediaan: true,
+            nama: {
+              [Op.regexp]: nama,
+            },
+            kategori: {
+              [Op.regexp]: kategori,
+            },
+          },
+          attributes: { 
+            exclude: ["deletedAt", "updatedAt"]
+          },
+          order: [
+            ['harga']
+          ]
+        })
+      }
+    }
+    if (req.user && req.user.isSeller) {
+      const id_warung = req.user.id_warung
+      food = await Food.findAll({
+        where: { id_warung },
+        attributes: { 
+          exclude: ["deletedAt", "updatedAt"]
+        },
+        order: [
+          ['harga']
         ]
       })
     }
