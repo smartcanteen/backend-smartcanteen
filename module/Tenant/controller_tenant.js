@@ -42,7 +42,7 @@ class controller_tenant {
   }
 
   async detailTenant(req, res) {
-    const id_warung = req.user.id_warung ? req.user.id_warung : req.params.id
+    const id_warung = req.params.id ? req.params.id : req.user.id_warung
     const tenant = await Tenant.findOne({
       where: { id_warung },
       include: [{

@@ -111,6 +111,16 @@ class controller_order {
     await order.save()
     return res.sendResponse(order, "Berhasil update status", 200)
   }
+
+  async statistikAdmin(req, res) {
+    const stat = {
+      penjualan: 5,
+      keuntungan: 100000,
+      transaksi: 8,
+      pembelian: 8
+    }
+    return res.sendResponse(stat, "Berikut Statistiknya", 200)
+  }
 }
 
 // module.exports = {
