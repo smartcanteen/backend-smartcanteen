@@ -62,7 +62,7 @@ module.exports = {
       nama: 'Lontong Sayur',
       harga: 20000,
       ketersediaan: true,
-      kategori: "Sarapan, Makan Siang",
+      kategori: "Sarapan,Makan Siang",
       id_warung: "494638a3-5789-44e5-8e12-47186495a831",
       createdAt: new Date(),
       updatedAt: new Date()
